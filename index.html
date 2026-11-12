@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="一个简单、透明的游戏账号人民币估价工具。"
+    />
+    <title>账号估价器</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <div class="eyebrow">ACCOUNT VALUE CALCULATOR</div>
+        <h1>账号估价器</h1>
+        <p>填入账号资产，快速得到一份清晰、可核对的人民币估价。</p>
+      </header>
+
+      <section class="calculator" aria-label="账号估价表单">
+        <form id="value-form" class="input-panel">
+          <div class="section-heading">
+            <div>
+              <span class="step">01</span>
+              <h2>账号资产</h2>
+            </div>
+            <button class="text-button" id="reset-button" type="reset">清空</button>
+          </div>
+
+          <div class="field-grid">
+            <label class="field field-wide">
+              <span class="field-label">哈夫币数量</span>
+              <span class="input-wrap">
+                <input
+                  id="coins"
+                  name="coins"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  inputmode="decimal"
+                  placeholder="例如：1.2"
+                />
+                <select id="coin-unit" name="coinUnit" class="unit-select" aria-label="哈夫币单位">
+                  <option value="yi">亿</option>
+                  <option value="million">m</option>
+                </select>
+              </span>
+              <small id="coin-unit-hint">当前单位为亿，例如 1.2 亿就填写 1.2</small>
+            </label>
+
+            <label class="field">
+              <span class="field-label">AW 子弹</span>
+              <span class="input-wrap">
+                <input id="ammo" name="ammo" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+                <span class="unit">发</span>
+              </span>
+              <small>默认 ¥0.80 / 发</small>
+            </label>
+
+            <label class="field">
+              <span class="field-label">红蛋</span>
+              <span class="input-wrap">
+                <input id="eggs" name="eggs" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+                <span class="unit">发</span>
+              </span>
+              <small>默认 ¥5.00 / 60 发，自动按发数换算</small>
+            </label>
+
+            <label class="field">
+              <span class="field-label">六套装备</span>
+              <span class="input-wrap">
+                <input id="sets" name="sets" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+                <span class="unit">件</span>
+              </span>
+              <small>默认 ¥2.00 / 件</small>
+            </label>
+
+            <label class="field">
+              <span class="field-label">龟包</span>
+              <span class="input-wrap">
+                <input id="bags" name="bags" type="number" min="0" step="1" inputmode="numeric" placeholder="0" />
+                <span class="unit">个</span>
+              </span>
+              <small>默认 ¥1.50 / 个</small>
+            </label>
+          </div>
+
+          <details class="market-settings">
+            <summary>
+              <span>调整市场单价</span>
+              <small>行情变化时可展开修改</small>
+            </summary>
+            <div class="price-grid">
+              <label class="field">
+                <span class="field-label">哈夫币基础比例</span>
+                <span class="input-wrap">
+                  <input id="base-ratio" name="baseRatio" type="number" min="3" step="0.1" inputmode="decimal" value="50" />
+                  <span class="unit">万 / 元</span>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">AW 子弹单价</span>
+                <span class="input-wrap">
+                  <input id="ammo-price" name="ammoPrice" type="number" min="0" step="0.01" inputmode="decimal" value="0.8" />
+                  <span class="unit">元 / 发</span>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">红蛋单价</span>
+                <span class="input-wrap">
+                  <input id="eggs-price" name="eggsPrice" type="number" min="0" step="0.1" inputmode="decimal" value="5" />
+                  <span class="unit">元 / 60 发</span>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">六套装备单价</span>
+                <span class="input-wrap">
+                  <input id="sets-price" name="setsPrice" type="number" min="0" step="0.1" inputmode="decimal" value="2" />
+                  <span class="unit">元 / 件</span>
+                </span>
+              </label>
+              <label class="field">
+                <span class="field-label">龟包单价</span>
+                <span class="input-wrap">
+                  <input id="bags-price" name="bagsPrice" type="number" min="0" step="0.1" inputmode="decimal" value="1.5" />
+                  <span class="unit">元 / 个</span>
+                </span>
+              </label>
+            </div>
+          </details>
+
+          <div class="divider"></div>
+
+          <div class="section-heading skin-heading">
+            <div>
+              <span class="step">02</span>
+              <h2>皮肤预期</h2>
+            </div>
+            <span class="optional">选填</span>
+          </div>
+
+          <div class="skin-fields skin-only">
+            <fieldset class="field skin-options">
+              <legend class="field-label">皮肤类型</legend>
+              <label class="check-option">
+                <input id="knife-skin" name="knifeSkin" type="checkbox" />
+                <span class="check-box" aria-hidden="true"></span>
+                <span><b>有刀皮</b><small>心理预期中的哈夫币比例降低 1</small></span>
+              </label>
+              <label class="check-option">
+                <input id="character-skin" name="characterSkin" type="checkbox" />
+                <span class="check-box" aria-hidden="true"></span>
+                <span><b>有角色皮肤</b><small>心理预期中的哈夫币比例再降低 1</small></span>
+              </label>
+              <p class="skin-note">备注：勾选皮肤表示你对账号的心理预期更高，每勾选一项，哈夫币兑换比例降低 1。</p>
+              <small id="current-ratio">当前比例：50 万哈夫币 = ¥1</small>
+            </fieldset>
+          </div>
+        </form>
+
+        <aside class="result-panel" aria-live="polite">
+          <div class="result-topline">
+            <span>预估账号价值</span>
+            <span class="live-dot"><i></i> 实时计算</span>
+          </div>
+
+          <div class="total-price">
+            <span>¥</span><strong id="total-price">0.00</strong>
+          </div>
+          <p class="result-note">此价格仅供参考，实际交易价格可能受市场行情影响。</p>
+
+          <div class="breakdown">
+            <h3>估价明细</h3>
+            <dl>
+              <div>
+                <dt>哈夫币基础价值</dt>
+                <dd id="coin-base">¥0.00</dd>
+              </div>
+              <div class="bonus-row">
+                <dt>皮肤心理预期调整</dt>
+                <dd id="bonus-value">+ ¥0.00</dd>
+              </div>
+              <div>
+                <dt>AW 子弹</dt>
+                <dd id="ammo-value">¥0.00</dd>
+              </div>
+              <div>
+                <dt>红蛋</dt>
+                <dd id="eggs-value">¥0.00</dd>
+              </div>
+              <div>
+                <dt>六套装备</dt>
+                <dd id="sets-value">¥0.00</dd>
+              </div>
+              <div>
+                <dt>龟包</dt>
+                <dd id="bags-value">¥0.00</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="formula-note">
+            <span>计算公式</span>
+            <p>哈夫币换算为万 ÷ 当前兑换比例 + 其他物品价值</p>
+          </div>
+        </aside>
+      </section>
+
+      <footer>数据仅保存在当前页面，不会上传到服务器。</footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
